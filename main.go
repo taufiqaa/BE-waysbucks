@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"waysbuck-API/database"
 	"waysbuck-API/pkg/mysql"
 	"waysbuck-API/routes"
@@ -13,17 +14,16 @@ import (
 )
 
 func main() {
-
 	// env
 	errEnv := godotenv.Load()
 	if errEnv != nil {
 		panic("Failed to load env file")
 	}
 
-	//initial DB
+	// initial DB
 	mysql.DatabaseInit()
 
-	//run imigration
+	// run migration
 	database.RunMigration()
 
 	r := mux.NewRouter()
@@ -36,8 +36,7 @@ func main() {
 	var AllowedMethods = handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS", "PATCH", "DELETE"})
 	var AllowedOrigins = handlers.AllowedOrigins([]string{"*"})
 
-	var port = "2500"
+	var port = os.Getenv("PORT")
 	fmt.Println("server running localhost:" + port)
-
-	http.ListenAndServe("localhost:"+port, handlers.CORS(AllowedHeaders, AllowedMethods, AllowedOrigins)(r))
+	http.ListenAndServe(":"+port, handlers.CORS(AllowedHeaders, AllowedMethods, AllowedOrigins)(r))
 }
