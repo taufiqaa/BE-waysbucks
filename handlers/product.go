@@ -124,14 +124,14 @@ func (h *handlerProduct) UpdateProduct(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	dataContex := r.Context().Value("dataFile")
-	filename := dataContex.(string)
+	filepath := dataContex.(string)
 
 	price, _ := strconv.Atoi(r.FormValue("price"))
 
 	request := productdto.ProductRequest{
 		Title: r.FormValue("title"),
 		Price: price,
-		Image: filename,
+		Image: filepath,
 	}
 
 	validation := validator.New()
@@ -150,8 +150,8 @@ func (h *handlerProduct) UpdateProduct(w http.ResponseWriter, r *http.Request) {
 	product.Title = request.Title
 	product.Price = request.Price
 
-	if filename != "false" {
-		product.Image = filename
+	if filepath != "false" {
+		product.Image = filepath
 	}
 
 	product, err = h.ProductRepository.UpdateProduct(product)
