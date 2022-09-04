@@ -19,7 +19,7 @@ type handlerCart struct {
 }
 
 // // Create `path_file` Global variable here ...
-var path_file_cart = "http://localhost:2500/uploads/"
+// var path_file_cart = "http://localhost:2500/uploads/"
 
 func HandlerCart(CartRepository repositories.CartRepository) *handlerCart {
 	return &handlerCart{CartRepository}
@@ -136,9 +136,9 @@ func (h *handlerCart) FindCartId(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for i, p := range cart {
-		cart[i].Product.Image = path_file_cart + p.Product.Image
-	}
+	// for i, p := range cart {
+	// 	cart[i].Product.Image = path_file_cart + p.Product.Image
+	// }
 
 	w.WriteHeader(http.StatusOK)
 	response := dto.SuccessResult{Status: "Success", Data: cart}
